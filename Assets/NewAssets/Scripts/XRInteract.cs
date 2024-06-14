@@ -1,24 +1,31 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRInteract : MonoBehaviour
 {
-    [SerializeField] private Transform raycastSource; // Transform to use for raycasting
-    [SerializeField] private float rayLength = 10f;
+    private int clickCounter = 0;
 
-    private void Update()
+    void Update()
     {
-        if (raycastSource != null && Input.GetButtonDown("Fire1")) // Change "Fire1" to the input you want to use for triggering interaction
+        if (Input.GetMouseButtonDown(0)) // Detect left mouse button click
         {
-            RaycastHit hit;
-            if (Physics.Raycast(raycastSource.position, raycastSource.forward, out hit, rayLength))
-            {
-                SphereClickHandler sphereClickHandler = hit.collider.GetComponent<SphereClickHandler>();
-                if (sphereClickHandler != null)
-                {
-                    sphereClickHandler.OnSphereClicked();
-                }
-            }
+            clickCounter++;
         }
+
+        if (clickCounter > 0)
+        {
+            HandleClickCounter();
+        }
+    }
+
+    void HandleClickCounter()
+    {
+        // Find all objects with the SphereClickHandler and call OnSphereClicked
+        SphereClickHandler[] handlers = FindObjectsOfType<SphereClickHandler>();
+        foreach (SphereClickHandler handler in handlers)
+        {
+            handler.OnSphereClicked();
+        }
+
+        clickCounter = 0; // Reset click counter after handling
     }
 }

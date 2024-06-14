@@ -21,7 +21,6 @@ public class MainPlayerViewCapture : MonoBehaviour
             // Render the main player's view onto the RenderTexture
             Camera.main.targetTexture = mainPlayerViewTexture;
             Camera.main.Render();
-            Debug.Log("Ok");
             Camera.main.targetTexture = null; // Reset the target texture to prevent rendering issues
         }
         else
